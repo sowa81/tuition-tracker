@@ -92,7 +92,7 @@ async function save(){
   });
  }catch(e){}
 }
-async async function addTuition(){
+async  function addTuition(){
  let n=document.getElementById('name').value.trim(),t=Math.max(1,+document.getElementById('target').value||12);
  if(!n)return alert('Enter a tuition name.');
  if(data.tuitions.some(x=>x.name.toLowerCase()===n.toLowerCase()))return alert('This name already exists. Use the existing entry.');
@@ -128,14 +128,14 @@ function openModal(k){
  document.getElementById('modal').classList.add('on');
 }
 function closeModal(){document.getElementById('modal').classList.remove('on')}
-async async function saveDay(){
+async  function saveDay(){
  let x=data.tuitions.find(x=>String(x.id)===document.getElementById('sel').value);if(!x)return;
  if(x.days.includes(picked)){x.days=x.days.filter(d=>d!==picked)}else{x.days.push(picked)}
- await await save();closeModal();render();
+ await  save();closeModal();render();
 }
 function moveMonth(n){view.setMonth(view.getMonth()+n);render()}function goToday(){view=new Date();view.setDate(1);render()}
-async async function removeTuition(id){if(confirm('Delete this tuition and all its saved dates?')){data.tuitions=data.tuitions.filter(x=>String(x.id)!==String(id));await save();render()}}
-async async function changeTarget(id){let x=data.tuitions.find(x=>String(x.id)===String(id)),v=prompt('Monthly target days:',x.target);if(v!==null&&+v>0){x.target=+v;await save();render()}}
+async  function removeTuition(id){if(confirm('Delete this tuition and all its saved dates?')){data.tuitions=data.tuitions.filter(x=>String(x.id)!==String(id));await save();render()}}
+async function changeTarget(id){let x=data.tuitions.find(x=>String(x.id)===String(id)),v=prompt('Monthly target days:',x.target);if(v!==null&&+v>0){x.target=+v;await save();render()}}
 function exportData(){
  let b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');
  a.href=URL.createObjectURL(b);a.download='sowa-tuition-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
