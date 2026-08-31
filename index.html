@@ -60,7 +60,7 @@ button{border:0;border-radius:10px;padding:10px 13px;cursor:pointer;background:v
 <div class="actions"><button onclick="saveDay()">Mark Taught</button><button class="ghost" onclick="closeModal()">Cancel</button></div>
 </div></div>
 <script>
-let data={tuitions:[]};
+let data={tuitions:[],schedule:[]};
 let view=new Date(); view.setDate(1); let picked=null;
 const DB_NAME="SowaTuitionDB", DB_VERSION=1, STORE="app";
 let dbReady=null;
