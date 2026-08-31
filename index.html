@@ -281,7 +281,7 @@ async function saveSchedule(){
 </script>
  <div class="modal" id="todayPopup">
   <div class="modalbox">
-    <h2>🌷 Today's Tuition</h2>
+    <h2>🌷</h2>
     <div id="todayTuitionList"></div>
 
     <div class="actions">
@@ -304,9 +304,9 @@ function showTodayPopup(){
   if(!names.length)return;
 
   document.getElementById("todayTuitionList").innerHTML=
-    `<div style="font-size:18px;text-align:center;padding:12px">
-      ${names.map(n=>`${n}📚`).join(", ")}
-    </div>`;
+  `<div style="font-size:18px;text-align:center;padding:12px">
+    🌷 Today's Tuition : ${names.map(n=>`${n}📚`).join(", ")}
+  
 
   document.getElementById("todayPopup").classList.add("on");
 }
