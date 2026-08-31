@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sowa's Tuition Tracker</title>
+<style>
+:root{--bg:#fbf6f7;--card:#fff;--ink:#3d2630;--muted:#866d76;--accent:#7b3048;--soft:#f2e3e8;--line:#ead7dd}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:28px 18px 20px;text-align:center;background:linear-gradient(135deg,#f7e5eb,#fff8fa)}
+h1{margin:0;font-size:27px}.sub{color:var(--muted);margin:7px 0 0;font-size:14px}
+.wrap{max-width:1050px;margin:auto;padding:18px}.grid{display:grid;grid-template-columns:330px 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 5px 20px #5b263010}
+h2{font-size:18px;margin:0 0 13px}label{font-size:13px;color:var(--muted);display:block;margin:10px 0 5px}
+input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink)}
+button{border:0;border-radius:10px;padding:10px 13px;cursor:pointer;background:var(--accent);color:white;font-weight:650}
+.ghost{background:var(--soft);color:var(--accent)}.danger{background:#eee;color:#8b3340}
+.actions{display:flex;gap:8px;margin-top:14px}.actions button{flex:1}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.month{font-weight:750;font-size:18px}.nav{display:flex;gap:6px}.nav button{padding:7px 11px}
+.week,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.week div{text-align:center;color:var(--muted);font-size:12px;font-weight:700;padding:4px}
+.day{min-height:78px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;cursor:pointer;position:relative}
+.day:hover{background:#fff8fa}.day.blank{background:transparent;border:0;cursor:default}.num{font-size:12px;font-weight:700}
+.marks{margin-top:7px;display:flex;flex-wrap:wrap;gap:3px}.dot{font-size:10px;background:var(--soft);color:var(--accent);padding:2px 4px;border-radius:5px;max-width:100%;overflow:hidden;white-space:nowrap}
+.list{margin-top:16px}.tuition{border:1px solid var(--line);border-radius:13px;padding:12px;margin:8px 0;background:#fff}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.name{font-weight:750}.count{color:var(--accent);font-weight:800}
+.bar{height:7px;background:#f0e4e8;border-radius:10px;margin:9px 0}.fill{height:100%;background:var(--accent);border-radius:10px}
+.small{font-size:12px;color:var(--muted)}.empty{text-align:center;color:var(--muted);padding:18px 5px}
+.modal{position:fixed;inset:0;background:#24151b80;display:none;align-items:center;justify-content:center;padding:18px}.modal.on{display:flex}
+.modalbox{background:white;border-radius:18px;padding:20px;max-width:400px;width:100%}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.day{min-height:62px}.dot{font-size:9px}}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7b3048">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tuition Tracker">
+<link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+<header><h1>🌷 Sowa's Tuition Tracker</h1><div class="sub">Track every tuition separately • target: 12 teaching days per month</div></header>
+<div class="wrap">
+<div class="grid">
+<section class="card">
+<h2>Add / Manage Tuition</h2>
+<label>Student / Tuition Name</label><input id="name" placeholder="e.g. Rafi">
+<label>Monthly Target</label><input id="target" type="number" min="1" value="12">
+<div class="actions"><button onclick="addTuition()">Add Tuition</button><button class="ghost" onclick="exportData()">Backup</button><button class="ghost" onclick="importData()">Restore</button></div>
+<div class="list"><h2 style="margin-top:20px">Your Tuitions</h2><div id="list"></div></div>
+</section>
+<section class="card">
+<div class="calendar-head"><div class="month" id="month"></div><div class="nav"><button class="ghost" onclick="moveMonth(-1)">‹</button><button class="ghost" onclick="goToday()">Today</button><button class="ghost" onclick="moveMonth(1)">›</button></div></div>
+<div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+<div class="cal" id="cal"></div>
+<div class="small" style="margin-top:12px">Click a date → choose the tuition → mark it taught. The same tuition name stays as one entry and its days are counted separately.</div>
+</section>
+</div>
+</div>
+<div class="modal" id="modal"><div class="modalbox">
+<h2 id="modalTitle">Teaching Day</h2><label>Choose Tuition</label><select id="sel"></select>
+<div class="actions"><button onclick="saveDay()">Mark Taught</button><button class="ghost" onclick="closeModal()">Cancel</button></div>
+</div></div>
+<script>
+let data={tuitions:[]};
+let view=new Date(); view.setDate(1); let picked=null;
+const DB_NAME="SowaTuitionDB", DB_VERSION=1, STORE="app";
+let dbReady=null;
+function openDB(){
+ return dbReady ||= new Promise((resolve,reject)=>{
+  const req=indexedDB.open(DB_NAME,DB_VERSION);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE);};
+  req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error);
+ });
+}
+async function loadData(){
+ try{
+  const db=await openDB();
+  const d=await new Promise((resolve,reject)=>{
+   const r=db.transaction(STORE,"readonly").objectStore(STORE).get("data");
+   r.onsuccess=()=>resolve(r.result); r.onerror=()=>reject(r.error);
+  });
+  if(d){data=d; localStorage.setItem("sowaTuitions",JSON.stringify(data)); return;}
+ }catch(e){}
+ try{data=JSON.parse(localStorage.getItem("sowaTuitions")||'{"tuitions":[]}')}catch(e){data={tuitions:[]}}
+}
+async function save(){
+ localStorage.setItem("sowaTuitions",JSON.stringify(data));
+ try{
+  const db=await openDB();
+  await new Promise((resolve,reject)=>{
+   const r=db.transaction(STORE,"readwrite").objectStore(STORE).put(data,"data");
+   r.onsuccess=resolve; r.onerror=()=>reject(r.error);
+  });
+ }catch(e){}
+}
+async async function addTuition(){
+ let n=document.getElementById('name').value.trim(),t=Math.max(1,+document.getElementById('target').value||12);
+ if(!n)return alert('Enter a tuition name.');
+ if(data.tuitions.some(x=>x.name.toLowerCase()===n.toLowerCase()))return alert('This name already exists. Use the existing entry.');
+ data.tuitions.push({id:Date.now()+Math.random(),name:n,target:t,days:[]});await save();document.getElementById('name').value='';render();
+}
+function key(d){return d.toISOString().slice(0,10)}
+function render(){renderList();renderCal()}
+function renderList(){
+ let el=document.getElementById('list');
+ if(!data.tuitions.length){el.innerHTML='<div class="empty">No tuitions added yet.</div>';return}
+ let ym=view.getFullYear()+'-'+String(view.getMonth()+1).padStart(2,'0');
+ el.innerHTML=data.tuitions.map(x=>{
+  let c=x.days.filter(d=>d.startsWith(ym)).length,left=Math.max(0,x.target-c),pct=Math.min(100,c/x.target*100);
+  return `<div class="tuition"><div class="row"><span class="name">${esc(x.name)}</span><span class="count">${c}/${x.target}</span></div>
+  <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
+  <div class="row"><span class="small">${c} days taught</span><span class="small">${left} more needed</span></div>
+  <div class="actions"><button class="ghost" onclick="changeTarget('${x.id}')">Target</button><button class="danger" onclick="removeTuition('${x.id}')">Delete</button></div></div>`;
+ }).join('');
+}
+function renderCal(){
+ let y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);
+ document.getElementById('month').textContent=first.toLocaleString('en',{month:'long',year:'numeric'});
+ let out='';for(let i=0;i<first.getDay();i++)out+='<div class="day blank"></div>';
+ for(let d=1;d<=last.getDate();d++){let dt=new Date(y,m,d),k=key(dt),today=k===key(new Date());
+  let marks=data.tuitions.filter(x=>x.days.includes(k)).map(x=>`<span class="dot">✓ ${esc(x.name)}</span>`).join('');
+  out+=`<div class="day" style="${today?'outline:2px solid var(--accent)':''}" onclick="openModal('${k}')"><div class="num">${d}</div><div class="marks">${marks}</div></div>`;
+ }document.getElementById('cal').innerHTML=out;
+}
+function openModal(k){
+ if(!data.tuitions.length)return alert('Add a tuition first.');
+ picked=k;document.getElementById('modalTitle').textContent='Teaching Day • '+new Date(k+'T00:00:00').toLocaleDateString();
+ document.getElementById('sel').innerHTML=data.tuitions.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+ document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on')}
+async async function saveDay(){
+ let x=data.tuitions.find(x=>String(x.id)===document.getElementById('sel').value);if(!x)return;
+ if(x.days.includes(picked)){x.days=x.days.filter(d=>d!==picked)}else{x.days.push(picked)}
+ await await save();closeModal();render();
+}
+function moveMonth(n){view.setMonth(view.getMonth()+n);render()}function goToday(){view=new Date();view.setDate(1);render()}
+async async function removeTuition(id){if(confirm('Delete this tuition and all its saved dates?')){data.tuitions=data.tuitions.filter(x=>String(x.id)!==String(id));await save();render()}}
+async async function changeTarget(id){let x=data.tuitions.find(x=>String(x.id)===String(id)),v=prompt('Monthly target days:',x.target);if(v!==null&&+v>0){x.target=+v;await save();render()}}
+function exportData(){
+ let b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(b);a.download='sowa-tuition-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importData(){
+ const i=document.createElement('input');i.type='file';i.accept='.json,application/json';
+ i.onchange=async()=>{const f=i.files[0];if(!f)return;try{
+  const d=JSON.parse(await f.text());
+  if(!d||!Array.isArray(d.tuitions))throw 0;
+  data=d;await save();render();alert('Your tuition data has been restored.');
+ }catch(e){alert('That backup file is not valid.');}};
+ i.click();
+}
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+loadData().then(render);
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+}
+</script>
+</body>
+</html>

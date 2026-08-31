@@ -1,0 +1,9 @@
+{
+"name":"Sowa's Tuition Tracker",
+"short_name":"Tuition Tracker",
+"start_url":"./sowa_tuition_tracker.html",
+"display":"standalone",
+"background_color":"#fbf6f7",
+"theme_color":"#7b3048",
+"icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
