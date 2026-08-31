@@ -106,6 +106,26 @@ function renderList(){
  let ym=view.getFullYear()+'-'+String(view.getMonth()+1).padStart(2,'0');
  el.innerHTML=data.tuitions.map(x=>{
   let c=x.days.filter(d=>d.startsWith(ym)).length,left=Math.max(0,x.target-c),pct=Math.min(100,c/x.target*100);
+  let today=new Date();
+let weekStart=new Date(today);
+weekStart.setDate(today.getDate()-today.getDay());
+
+let weekDates=[];
+for(let i=0;i<7;i++){
+  let d=new Date(weekStart);
+  d.setDate(weekStart.getDate()+i);
+  weekDates.push(key(d));
+}
+
+let weekNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+let scheduledDays=(x.schedule||[])
+  .filter(d=>weekDates.includes(d))
+  .map(d=>weekNames[new Date(d+"T00:00:00").getDay()]);
+
+let weekText=scheduledDays.length
+  ? scheduledDays.join(", ")
+  : "No classes set";
   return `<div class="tuition"><div class="row"><span class="name">${esc(x.name)}</span><span class="count">${c}/${x.target}</span></div>
   <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
   <div class="row"><span class="small">${c} days taught</span><span class="small">${left} more needed</span></div>
