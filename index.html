@@ -139,7 +139,14 @@ function renderCal(){
  document.getElementById('month').textContent=first.toLocaleString('en',{month:'long',year:'numeric'});
  let out='';for(let i=0;i<first.getDay();i++)out+='<div class="day blank"></div>';
  for(let d=1;d<=last.getDate();d++){let dt=new Date(y,m,d),k=key(dt),today=k===key(new Date());
-  let marks=data.tuitions.filter(x=>x.days.includes(k)).map(x=>`<span class="dot">✓ ${esc(x.name)}</span>`).join('');
+  let marks=data.tuitions.map(x=>{
+  let taught=x.days.includes(k);
+  let scheduled=(x.schedule||[]).includes(k);
+
+  if(taught)return `<span class="dot">✓ ${esc(x.name)}</span>`;
+  if(scheduled)return `<span class="dot" style="opacity:.45">${esc(x.name)}</span>`;
+  return '';
+}).join('');
   out+=`<div class="day" style="${today?'outline:2px solid var(--accent)':''}" onclick="openModal('${k}')"><div class="num">${d}</div><div class="marks">${marks}</div></div>`;
  }document.getElementById('cal').innerHTML=out;
 }
@@ -172,11 +179,140 @@ function importData(){
  i.click();
 }
 function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-loadData().then(render);
+loadData().then(()=>{
+  render();
+  setTimeout(showTodayPopup,500);
+});
 </script>
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+}
+</script>
+ <div class="modal" id="scheduleModal">
+  <div class="modalbox">
+    <h2 id="scheduleTitle">Set This Week</h2>
+
+    <div id="scheduleDays"
+         style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:15px 0">
+    </div>
+
+    <div class="actions">
+      <button onclick="saveSchedule()">Save</button>
+      <button class="ghost" onclick="closeSchedule()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let scheduleTuitionId=null;
+
+function getWeekDates(){
+  const now=new Date();
+  const start=new Date(now);
+  start.setDate(now.getDate()-now.getDay());
+
+  let result=[];
+
+  for(let i=0;i<7;i++){
+    const d=new Date(start);
+    d.setDate(start.getDate()+i);
+    result.push(key(d));
+  }
+
+  return result;
+}
+
+function openSchedule(id){
+
+  scheduleTuitionId=id;
+
+  const tuition=data.tuitions.find(
+    x=>String(x.id)===String(id)
+  );
+
+  if(!tuition)return;
+
+  document.getElementById("scheduleTitle").textContent=
+    tuition.name+" — This Week";
+
+  const dates=getWeekDates();
+  const names=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  const selected=tuition.schedule||[];
+
+  document.getElementById("scheduleDays").innerHTML=
+    dates.map((date,i)=>`
+      <label style="margin:0;padding:10px;border:1px solid var(--line);
+                    border-radius:10px;background:#fff">
+        <input type="checkbox"
+               class="scheduleCheck"
+               value="${date}"
+               ${selected.includes(date)?"checked":""}>
+        ${names[i]}
+      </label>
+    `).join("");
+
+  document.getElementById("scheduleModal").classList.add("on");
+}
+
+function closeSchedule(){
+  document.getElementById("scheduleModal").classList.remove("on");
+  scheduleTuitionId=null;
+}
+
+async function saveSchedule(){
+
+  const tuition=data.tuitions.find(
+    x=>String(x.id)===String(scheduleTuitionId)
+  );
+
+  if(!tuition)return;
+
+  tuition.schedule=[
+    ...document.querySelectorAll(".scheduleCheck:checked")
+  ].map(x=>x.value);
+
+  await save();
+
+  closeSchedule();
+  render();
+}
+</script>
+ <div class="modal" id="todayPopup">
+  <div class="modalbox">
+    <h2>🌷 Today's Tuition</h2>
+    <div id="todayTuitionList"></div>
+
+    <div class="actions">
+      <button onclick="closeTodayPopup()">Okay</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTodayPopup(){
+
+  if(!data || !Array.isArray(data.tuitions)) return;
+
+  const today=key(new Date());
+
+  const names=data.tuitions
+    .filter(x=>(x.schedule||[]).includes(today))
+    .map(x=>esc(x.name));
+
+  if(!names.length)return;
+
+  document.getElementById("todayTuitionList").innerHTML=
+    `<div style="font-size:18px;text-align:center;padding:12px">
+      ${names.map(n=>`${n}📚`).join(", ")}
+    </div>`;
+
+  document.getElementById("todayPopup").classList.add("on");
+}
+
+function closeTodayPopup(){
+  document.getElementById("todayPopup").classList.remove("on");
 }
 </script>
 </body>
