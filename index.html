@@ -128,7 +128,9 @@ let weekText=scheduledDays.length
   : "No classes set";
   return `<div class="tuition"><div class="row"><span class="name">${esc(x.name)}</span><span class="count">${c}/${x.target}</span></div>
   <div class="bar"><div class="fill" style="width:${pct}%"></div></div>
-  <div class="row"><span class="small">${c} days taught</span><span class="small">${left} more needed</span></div>
+  <div class="row"><span class="small">${c} days taught</span><span class="small">${left} more needed</span></div> <div class="small" style="margin-top:8px;opacity:.65">
+This week: ${weekText}
+</div>
   <div class="actions"><button class="ghost" onclick="changeTarget('${x.id}')">Target</button><button class="danger" onclick="removeTuition('${x.id}')">Delete</button></div></div>`;
  }).join('');
 }
