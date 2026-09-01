@@ -427,7 +427,10 @@ function getCycleInfo(x){
   );
 
   let completedCycles=
-    Math.floor((days.length-1)/target);
+    Math.max(
+      0,
+      Math.floor((days.length-1)/target)
+    );
 
   let cycleStartIndex=
     completedCycles*target;
