@@ -417,45 +417,37 @@ return key(d);
 
 function getCycleInfo(x){
 
-let days=[...(x.days||[])].sort();
+  let days=[...(x.days||[])].sort();
 
-let target=Math.max(
-1,
-Number(x.target)||12
-);
+  let target=Math.max(
+    1,
+    Number(x.target)||12
+  );
 
+  let completedCycles=
+    Math.floor((days.length-1)/target);
 
-/*
-Each completed target-sized group is one cycle.
-The current cycle is simply the dates after
-the last completed group.
-*/
+  let cycleStartIndex=
+    completedCycles*target;
 
-let completedCycles=
-Math.floor(days.length/target);
+  let currentCount=
+    days.length-cycleStartIndex;
 
-let cycleStartIndex=
-completedCycles*target;
+  let cycleNumber=
+    completedCycles+1;
 
-let currentCount=
-days.length-cycleStartIndex;
+  let cycleComplete=
+    currentCount===target;
 
-let cycleNumber=
-completedCycles+1;
+  return{
+    count:currentCount,
+    target:target,
+    cycleNumber:cycleNumber,
+    completedCycles:completedCycles,
+    cycleComplete:cycleComplete
+  };
 
-let cycleComplete=
-currentCount===target;
-
-
-return{
-  count:currentCount,
-  target:target,
-  cycleNumber:cycleNumber,
-  completedCycles:completedCycles,
-  cycleComplete:cycleComplete
-};
-
-}
+  }
 
 
 function render(){
