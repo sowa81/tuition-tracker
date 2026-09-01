@@ -3,287 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
 <title>Sowa's Tuition Tracker</title>
 
 <style>
-:root{
-  --bg:#fbf6f7;
-  --card:#fff;
-  --ink:#3d2630;
-  --muted:#866d76;
-  --accent:#7b3048;
-  --soft:#f2e3e8;
-  --line:#ead7dd
-}
-
+:root{--bg:#fbf6f7;--card:#fff;--ink:#3d2630;--muted:#866d76;--accent:#7b3048;--soft:#f2e3e8;--line:#ead7dd}
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif
-}
-
-header{
-  padding:28px 18px 20px;
-  text-align:center;
-  background:linear-gradient(135deg,#f7e5eb,#fff8fa)
-}
-
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:28px 18px 20px;text-align:center;background:linear-gradient(135deg,#f7e5eb,#fff8fa)}
 h1{margin:0;font-size:27px}
-
-.sub{
-  color:var(--muted);
-  margin:7px 0 0;
-  font-size:14px
-}
-
-.wrap{
-  max-width:1050px;
-  margin:auto;
-  padding:18px
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:330px 1fr;
-  gap:16px
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 5px 20px #5b263010
-}
-
-h2{
-  font-size:18px;
-  margin:0 0 13px
-}
-
-label{
-  font-size:13px;
-  color:var(--muted);
-  display:block;
-  margin:10px 0 5px
-}
-
+.sub{color:var(--muted);margin:7px 0 0;font-size:14px}
+.wrap{max-width:1050px;margin:auto;padding:18px}
+.grid{display:grid;grid-template-columns:330px 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 5px 20px #5b263010}
+h2{font-size:18px;margin:0 0 13px}
+label{font-size:13px;color:var(--muted);display:block;margin:10px 0 5px}
 input,select,button{font:inherit}
-
-input,select{
-  width:100%;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:white;
-  color:var(--ink)
-}
-
-button{
-  border:0;
-  border-radius:10px;
-  padding:10px 13px;
-  cursor:pointer;
-  background:var(--accent);
-  color:white;
-  font-weight:650
-}
-
-.ghost{
-  background:var(--soft);
-  color:var(--accent)
-}
-
-.danger{
-  background:#eee;
-  color:#8b3340
-}
-
-.actions{
-  display:flex;
-  gap:8px;
-  margin-top:14px
-}
-
+input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink)}
+button{border:0;border-radius:10px;padding:10px 13px;cursor:pointer;background:var(--accent);color:white;font-weight:650}
+.ghost{background:var(--soft);color:var(--accent)}
+.danger{background:#eee;color:#8b3340}
+.actions{display:flex;gap:8px;margin-top:14px}
 .actions button{flex:1}
-
-.calendar-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:12px
-}
-
-.month{
-  font-weight:750;
-  font-size:18px
-}
-
-.nav{
-  display:flex;
-  gap:6px
-}
-
+.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.month{font-weight:750;font-size:18px}
+.nav{display:flex;gap:6px}
 .nav button{padding:7px 11px}
-
-.week,.cal{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:5px
-}
-
-.week div{
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  font-weight:700;
-  padding:4px
-}
-
-.day{
-  min-height:78px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#fff;
-  padding:7px;
-  cursor:pointer;
-  position:relative
-}
-
+.week,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.week div{text-align:center;color:var(--muted);font-size:12px;font-weight:700;padding:4px}
+.day{min-height:78px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:7px;cursor:pointer;position:relative}
 .day:hover{background:#fff8fa}
-
-.day.blank{
-  background:transparent;
-  border:0;
-  cursor:default
-}
-
-.num{
-  font-size:12px;
-  font-weight:700
-}
-
-.marks{
-  margin-top:7px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:3px
-}
-
-.dot{
-  font-size:10px;
-  background:var(--soft);
-  color:var(--accent);
-  padding:2px 4px;
-  border-radius:5px;
-  max-width:100%;
-  overflow:hidden;
-  white-space:nowrap
-}
-
+.day.blank{background:transparent;border:0;cursor:default}
+.num{font-size:12px;font-weight:700}
+.marks{margin-top:7px;display:flex;flex-wrap:wrap;gap:3px}
+.dot{font-size:10px;background:var(--soft);color:var(--accent);padding:2px 4px;border-radius:5px;max-width:100%;overflow:hidden;white-space:nowrap}
 .list{margin-top:16px}
-
-.tuition{
-  border:1px solid var(--line);
-  border-radius:13px;
-  padding:12px;
-  margin:8px 0;
-  background:#fff
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center
-}
-
+.tuition{border:1px solid var(--line);border-radius:13px;padding:12px;margin:8px 0;background:#fff}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .name{font-weight:750}
-
-.count{
-  color:var(--accent);
-  font-weight:800
-}
-
-.bar{
-  height:7px;
-  background:#f0e4e8;
-  border-radius:10px;
-  margin:9px 0
-}
-
-.fill{
-  height:100%;
-  background:var(--accent);
-  border-radius:10px
-}
-
-.small{
-  font-size:12px;
-  color:var(--muted)
-}
-
-.empty{
-  text-align:center;
-  color:var(--muted);
-  padding:18px 5px
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:#24151b80;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  z-index:1000
-}
-
+.count{color:var(--accent);font-weight:800}
+.bar{height:7px;background:#f0e4e8;border-radius:10px;margin:9px 0}
+.fill{height:100%;background:var(--accent);border-radius:10px}
+.small{font-size:12px;color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:18px 5px}
+.modal{position:fixed;inset:0;background:#24151b80;display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}
 .modal.on{display:flex}
-
-.modalbox{
-  background:white;
-  border-radius:18px;
-  padding:20px;
-  max-width:400px;
-  width:100%;
-  max-height:90vh;
-  overflow:auto
-}
-
-.schedule-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-  margin:15px 0
-}
-
-.schedule-day{
-  margin:0;
-  padding:10px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#fff;
-  cursor:pointer
-}
-
-.schedule-day input{
-  width:auto;
-  margin-right:6px
-}
-
-.today-title{
-  font-size:18px;
-  text-align:center;
-  padding:12px;
-  font-weight:700
-}
-
+.modalbox{background:white;border-radius:18px;padding:20px;max-width:400px;width:100%;max-height:90vh;overflow:auto}
+.schedule-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:15px 0}
+.schedule-day{margin:0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.schedule-day input{width:auto;margin-right:6px}
+.today-title{font-size:18px;text-align:center;padding:12px;font-weight:700}
+.cycle-note{font-size:12px;color:var(--muted);margin-top:7px;opacity:.75}
 @media(max-width:760px){
   .grid{grid-template-columns:1fr}
   .day{min-height:62px}
@@ -297,20 +66,16 @@ button{
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Tuition Tracker">
 <link rel="apple-touch-icon" href="icon.svg">
-
 </head>
 
 <body>
 
 <header>
-  <h1>🌷 Sowa's Tuition Tracker</h1>
-  <div class="sub">
-    Track every tuition separately • target: 12 teaching days per month
-  </div>
+<h1>🌷 Sowa's Tuition Tracker</h1>
+<div class="sub">Track every tuition separately • 12 teaching days per cycle</div>
 </header>
 
 <div class="wrap">
-
 <div class="grid">
 
 <section class="card">
@@ -320,18 +85,18 @@ button{
 <label>Student / Tuition Name</label>
 <input id="name" placeholder="e.g. Rafi">
 
-<label>Monthly Target</label>
+<label>Target Teaching Days</label>
 <input id="target" type="number" min="1" value="12">
 
 <div class="actions">
-  <button onclick="addTuition()">Add Tuition</button>
-  <button class="ghost" onclick="exportData()">Backup</button>
-  <button class="ghost" onclick="importData()">Restore</button>
+<button onclick="addTuition()">Add Tuition</button>
+<button class="ghost" onclick="exportData()">Backup</button>
+<button class="ghost" onclick="importData()">Restore</button>
 </div>
 
 <div class="list">
-  <h2 style="margin-top:20px">Your Tuitions</h2>
-  <div id="list"></div>
+<h2 style="margin-top:20px">Your Tuitions</h2>
+<div id="list"></div>
 </div>
 
 </section>
@@ -339,32 +104,25 @@ button{
 <section class="card">
 
 <div class="calendar-head">
+<div class="month" id="month"></div>
 
-  <div class="month" id="month"></div>
-
-  <div class="nav">
-    <button class="ghost" onclick="moveMonth(-1)">‹</button>
-    <button class="ghost" onclick="goToday()">Today</button>
-    <button class="ghost" onclick="moveMonth(1)">›</button>
-  </div>
-
+<div class="nav">
+<button class="ghost" onclick="moveMonth(-1)">‹</button>
+<button class="ghost" onclick="goToday()">Today</button>
+<button class="ghost" onclick="moveMonth(1)">›</button>
+</div>
 </div>
 
 <div class="week">
-  <div>Sun</div>
-  <div>Mon</div>
-  <div>Tue</div>
-  <div>Wed</div>
-  <div>Thu</div>
-  <div>Fri</div>
-  <div>Sat</div>
+<div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
+<div>Thu</div><div>Fri</div><div>Sat</div>
 </div>
 
 <div class="cal" id="cal"></div>
 
 <div class="small" style="margin-top:12px">
-  Click a date → choose the tuition → mark it taught.
-  Scheduled classes appear faded until they are taught.
+Click a date → choose the tuition → mark it taught.
+Scheduled classes appear faded until they are taught.
 </div>
 
 </section>
@@ -373,62 +131,55 @@ button{
 </div>
 
 
-<!-- MARK TAUGHT MODAL -->
+<!-- MARK TAUGHT -->
 
 <div class="modal" id="modal">
+<div class="modalbox">
 
-  <div class="modalbox">
+<h2 id="modalTitle">Teaching Day</h2>
 
-    <h2 id="modalTitle">Teaching Day</h2>
+<label>Choose Tuition</label>
+<select id="sel"></select>
 
-    <label>Choose Tuition</label>
+<div class="actions">
+<button onclick="saveDay()">Mark Taught</button>
+<button class="ghost" onclick="closeModal()">Cancel</button>
+</div>
 
-    <select id="sel"></select>
-
-    <div class="actions">
-      <button onclick="saveDay()">Mark Taught</button>
-      <button class="ghost" onclick="closeModal()">Cancel</button>
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
-<!-- WEEKLY SCHEDULE MODAL -->
+<!-- WEEKLY SCHEDULE -->
 
 <div class="modal" id="scheduleModal">
+<div class="modalbox">
 
-  <div class="modalbox">
+<h2 id="scheduleTitle">Set This Week</h2>
 
-    <h2 id="scheduleTitle">Set This Week</h2>
+<div class="schedule-grid" id="scheduleDays"></div>
 
-    <div class="schedule-grid" id="scheduleDays"></div>
+<div class="actions">
+<button onclick="saveSchedule()">Save</button>
+<button class="ghost" onclick="closeSchedule()">Cancel</button>
+</div>
 
-    <div class="actions">
-      <button onclick="saveSchedule()">Save</button>
-      <button class="ghost" onclick="closeSchedule()">Cancel</button>
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
 <!-- TODAY POPUP -->
 
 <div class="modal" id="todayPopup">
+<div class="modalbox">
 
-  <div class="modalbox">
+<div id="todayTuitionList"></div>
 
-    <div id="todayTuitionList"></div>
+<div class="actions">
+<button onclick="closeTodayPopup()">Okay</button>
+</div>
 
-    <div class="actions">
-      <button onclick="closeTodayPopup()">Okay</button>
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
@@ -453,594 +204,633 @@ let dbReady=null;
 
 function openDB(){
 
-  return dbReady ||= new Promise((resolve,reject)=>{
+return dbReady ||= new Promise((resolve,reject)=>{
 
-    const req=indexedDB.open(DB_NAME,DB_VERSION);
+const req=indexedDB.open(DB_NAME,DB_VERSION);
 
-    req.onupgradeneeded=()=>{
+req.onupgradeneeded=()=>{
+if(!req.result.objectStoreNames.contains(STORE)){
+req.result.createObjectStore(STORE);
+}
+};
 
-      if(!req.result.objectStoreNames.contains(STORE)){
-        req.result.createObjectStore(STORE);
-      }
+req.onsuccess=()=>resolve(req.result);
+req.onerror=()=>reject(req.error);
 
-    };
-
-    req.onsuccess=()=>resolve(req.result);
-    req.onerror=()=>reject(req.error);
-
-  });
+});
 
 }
 
 
 async function loadData(){
 
-  try{
+try{
 
-    const db=await openDB();
+const db=await openDB();
 
-    const d=await new Promise((resolve,reject)=>{
+const d=await new Promise((resolve,reject)=>{
 
-      const r=db
-        .transaction(STORE,"readonly")
-        .objectStore(STORE)
-        .get("data");
+const r=db.transaction(STORE,"readonly")
+.objectStore(STORE)
+.get("data");
 
-      r.onsuccess=()=>resolve(r.result);
-      r.onerror=()=>reject(r.error);
+r.onsuccess=()=>resolve(r.result);
+r.onerror=()=>reject(r.error);
 
-    });
+});
 
-    if(d){
+if(d){
 
-      data=d;
+data=d;
 
-      if(!Array.isArray(data.tuitions)){
-        data.tuitions=[];
-      }
+if(!Array.isArray(data.tuitions)){
+data.tuitions=[];
+}
 
-      localStorage.setItem(
-        "sowaTuitions",
-        JSON.stringify(data)
-      );
+localStorage.setItem(
+"sowaTuitions",
+JSON.stringify(data)
+);
 
-      return;
-    }
+return;
 
-  }catch(e){}
+}
+
+}catch(e){}
 
 
-  try{
+try{
 
-    data=JSON.parse(
-      localStorage.getItem("sowaTuitions")
-      || '{"tuitions":[]}'
-    );
+data=JSON.parse(
+localStorage.getItem("sowaTuitions")
+||'{"tuitions":[]}'
+);
 
-    if(!Array.isArray(data.tuitions)){
-      data.tuitions=[];
-    }
+if(!Array.isArray(data.tuitions)){
+data.tuitions=[];
+}
 
-  }catch(e){
+}catch(e){
 
-    data={tuitions:[]};
+data={tuitions:[]};
 
-  }
+}
 
 }
 
 
 async function save(){
 
-  localStorage.setItem(
-    "sowaTuitions",
-    JSON.stringify(data)
-  );
+localStorage.setItem(
+"sowaTuitions",
+JSON.stringify(data)
+);
 
-  try{
+try{
 
-    const db=await openDB();
+const db=await openDB();
 
-    await new Promise((resolve,reject)=>{
+await new Promise((resolve,reject)=>{
 
-      const r=db
-        .transaction(STORE,"readwrite")
-        .objectStore(STORE)
-        .put(data,"data");
+const r=db.transaction(STORE,"readwrite")
+.objectStore(STORE)
+.put(data,"data");
 
-      r.onsuccess=resolve;
-      r.onerror=()=>reject(r.error);
+r.onsuccess=resolve;
+r.onerror=()=>reject(r.error);
 
-    });
+});
 
-  }catch(e){}
+}catch(e){}
 
 }
 
 
 async function addTuition(){
 
-  let n=document
-    .getElementById('name')
-    .value
-    .trim();
+let n=document.getElementById("name").value.trim();
 
-  let t=Math.max(
-    1,
-    +document.getElementById('target').value || 12
-  );
+let t=Math.max(
+1,
++document.getElementById("target").value||12
+);
 
-  if(!n){
-    return alert('Enter a tuition name.');
-  }
+if(!n){
+return alert("Enter a tuition name.");
+}
 
-  if(
-    data.tuitions.some(
-      x=>x.name.toLowerCase()===n.toLowerCase()
-    )
-  ){
+if(
+data.tuitions.some(
+x=>x.name.toLowerCase()===n.toLowerCase()
+)
+){
 
-    return alert(
-      'This name already exists. Use the existing entry.'
-    );
+return alert(
+"This name already exists. Use the existing entry."
+);
 
-  }
+}
 
-  data.tuitions.push({
 
-    id:Date.now()+Math.random(),
+data.tuitions.push({
 
-    name:n,
+id:Date.now()+Math.random(),
 
-    target:t,
+name:n,
 
-    days:[],
+target:t,
 
-    schedule:{}
+days:[],
 
-  });
+schedule:{},
 
-  await save();
+cycleStart:null
 
-  document.getElementById('name').value='';
+});
 
-  render();
+
+await save();
+
+document.getElementById("name").value="";
+
+render();
 
 }
 
 
 function key(d){
 
-  return d.toISOString().slice(0,10);
+return d.toISOString().slice(0,10);
 
 }
 
 
-/* CURRENT WEEK */
+/* WEEK FUNCTIONS */
 
 function getWeekDates(){
 
-  const now=new Date();
+const now=new Date();
 
-  const start=new Date(now);
+const start=new Date(now);
 
-  start.setHours(0,0,0,0);
+start.setHours(0,0,0,0);
 
-  start.setDate(
-    now.getDate()-now.getDay()
-  );
+start.setDate(
+now.getDate()-now.getDay()
+);
 
-  let result=[];
+let result=[];
 
-  for(let i=0;i<7;i++){
+for(let i=0;i<7;i++){
 
-    const d=new Date(start);
+const d=new Date(start);
 
-    d.setDate(
-      start.getDate()+i
-    );
+d.setDate(
+start.getDate()+i
+);
 
-    result.push(key(d));
+result.push(key(d));
 
-  }
+}
 
-  return result;
+return result;
 
 }
 
 
 function getWeekId(date){
 
-  const d=new Date(date);
+const d=new Date(date);
 
-  d.setHours(0,0,0,0);
+d.setHours(0,0,0,0);
 
-  d.setDate(
-    d.getDate()-d.getDay()
-  );
+d.setDate(
+d.getDate()-d.getDay()
+);
 
-  return key(d);
+return key(d);
+
+}
+
+
+/* CYCLE LOGIC */
+
+function getCycleInfo(x){
+
+let days=[...(x.days||[])].sort();
+
+let target=Math.max(
+1,
+Number(x.target)||12
+);
+
+
+/*
+Each completed target-sized group is one cycle.
+The current cycle is simply the dates after
+the last completed group.
+*/
+
+let completedCycles=
+Math.floor(days.length/target);
+
+let cycleStartIndex=
+completedCycles*target;
+
+let currentCount=
+days.length-cycleStartIndex;
+
+let cycleNumber=
+completedCycles+1;
+
+let cycleComplete=
+currentCount===target;
+
+
+return{
+  count:currentCount,
+  target:target,
+  cycleNumber:cycleNumber,
+  completedCycles:completedCycles,
+  cycleComplete:cycleComplete
+};
 
 }
 
 
 function render(){
 
-  renderList();
-  renderCal();
+renderList();
+renderCal();
 
 }
 
 
 function renderList(){
 
-  let el=document.getElementById('list');
+let el=document.getElementById("list");
 
-  if(!data.tuitions.length){
+if(!data.tuitions.length){
 
-    el.innerHTML=
-      '<div class="empty">No tuitions added yet.</div>';
+el.innerHTML=
+'<div class="empty">No tuitions added yet.</div>';
 
-    return;
-  }
+return;
 
-  let ym=
-    view.getFullYear()+
-    '-'+
-    String(view.getMonth()+1).padStart(2,'0');
+}
 
 
-  el.innerHTML=data.tuitions.map(x=>{
+el.innerHTML=data.tuitions.map(x=>{
 
-    let c=x.days.filter(
-      d=>d.startsWith(ym)
-    ).length;
+/*
+Migrate old data safely.
+*/
 
-    let left=Math.max(
-      0,
-      x.target-c
-    );
+if(!Array.isArray(x.days)){
+x.days=[];
+}
 
-    let pct=Math.min(
-      100,
-      c/x.target*100
-    );
+if(!x.schedule){
+x.schedule={};
+}
 
+const cycle=getCycleInfo(x);
 
-    const weekId=getWeekId(
-      new Date()
-    );
-
-    const currentSchedule=
-      x.schedule &&
-      Array.isArray(x.schedule[weekId])
-        ? x.schedule[weekId]
-        : [];
+const currentSchedule=
+Array.isArray(
+x.schedule[getWeekId(new Date())]
+)
+?x.schedule[getWeekId(new Date())]
+:[];
 
 
-    const dayNames=[
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ];
+const dayNames=[
+"Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+];
 
 
-    const weekText=currentSchedule.length
-      ? currentSchedule
-          .map(d=>{
-            const day=new Date(
-              d+"T00:00:00"
-            );
+const weekText=currentSchedule.length
+?currentSchedule.map(d=>{
 
-            return dayNames[
-              day.getDay()
-            ];
-          })
-          .join(", ")
-      : "No classes set";
+const day=
+new Date(d+"T00:00:00");
+
+return dayNames[day.getDay()];
+
+}).join(", ")
+:"No classes set";
 
 
-    return `
+const pct=
+Math.min(
+100,
+cycle.count/cycle.target*100
+);
 
-      <div class="tuition">
 
-        <div class="row">
+return `
 
-          <span class="name">
-            ${esc(x.name)}
-          </span>
+<div class="tuition">
 
-          <span class="count">
-            ${c}/${x.target}
-          </span>
+<div class="row">
 
-        </div>
+<span class="name">
+${esc(x.name)}
+</span>
 
-        <div class="bar">
-          <div
-            class="fill"
-            style="width:${pct}%">
-          </div>
-        </div>
+<span class="count">
+${cycle.count}/${cycle.target}
+</span>
 
-        <div class="row">
+</div>
 
-          <span class="small">
-            ${c} days taught
-          </span>
 
-          <span class="small">
-            ${left} more needed
-          </span>
+<div class="bar">
 
-        </div>
+<div
+class="fill"
+style="width:${pct}%">
+</div>
 
-        <div
-          class="small"
-          style="margin-top:8px;opacity:.55">
+</div>
 
-          This week: ${weekText}
 
-        </div>
+<div class="row">
 
-        <div class="actions">
+<span class="small">
+${cycle.count} days in current cycle
+</span>
 
-          <button
-            class="ghost"
-            onclick="openSchedule('${x.id}')">
+<span class="small">
+${Math.max(0,cycle.target-cycle.count)} more needed
+</span>
 
-            Set days
+</div>
 
-          </button>
 
-          <button
-            class="ghost"
-            onclick="changeTarget('${x.id}')">
+<div
+class="cycle-note">
 
-            Target
+Cycle ${cycle.cycleNumber} •
+This week: ${weekText}
 
-          </button>
+</div>
 
-          <button
-            class="danger"
-            onclick="removeTuition('${x.id}')">
 
-            Delete
+<div class="actions">
 
-          </button>
+<button
+class="ghost"
+onclick="openSchedule('${x.id}')">
 
-        </div>
+Set days
 
-      </div>
+</button>
 
-    `;
+<button
+class="ghost"
+onclick="changeTarget('${x.id}')">
 
-  }).join('');
+Target
+
+</button>
+
+<button
+class="danger"
+onclick="removeTuition('${x.id}')">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
 
 }
 
 
 function renderCal(){
 
-  let y=view.getFullYear();
+let y=view.getFullYear();
 
-  let m=view.getMonth();
+let m=view.getMonth();
 
-  let first=new Date(y,m,1);
+let first=new Date(y,m,1);
 
-  let last=new Date(y,m+1,0);
-
-
-  document.getElementById('month')
-    .textContent=
-    first.toLocaleString(
-      'en',
-      {
-        month:'long',
-        year:'numeric'
-      }
-    );
+let last=new Date(y,m+1,0);
 
 
-  let out='';
+document.getElementById("month")
+.textContent=
+first.toLocaleString(
+"en",
+{
+month:"long",
+year:"numeric"
+}
+);
 
 
-  for(
-    let i=0;
-    i<first.getDay();
-    i++
-  ){
-
-    out+=
-      '<div class="day blank"></div>';
-
-  }
+let out="";
 
 
-  for(
-    let d=1;
-    d<=last.getDate();
-    d++
-  ){
+for(
+let i=0;
+i<first.getDay();
+i++
+){
 
-    let dt=new Date(y,m,d);
-
-    let k=key(dt);
-
-    let today=
-      k===key(new Date());
-
-
-    let marks=
-      data.tuitions
-        .map(x=>{
-
-          let taught=
-            x.days.includes(k);
-
-
-          let weekId=
-            getWeekId(dt);
-
-
-          let scheduled=
-            x.schedule &&
-            Array.isArray(x.schedule[weekId]) &&
-            x.schedule[weekId].includes(k);
-
-
-          if(taught){
-
-            return `
-              <span class="dot">
-                ✓ ${esc(x.name)}
-              </span>
-            `;
-
-          }
-
-
-          if(scheduled){
-
-            return `
-              <span
-                class="dot"
-                style="opacity:.45">
-
-                ${esc(x.name)}
-
-              </span>
-            `;
-
-          }
-
-
-          return '';
-
-        })
-        .join('');
-
-
-    out+=`
-
-      <div
-        class="day"
-        style="${
-          today
-            ? 'outline:2px solid var(--accent)'
-            : ''
-        }"
-        onclick="openModal('${k}')">
-
-        <div class="num">
-          ${d}
-        </div>
-
-        <div class="marks">
-          ${marks}
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  document.getElementById('cal')
-    .innerHTML=out;
+out+='<div class="day blank"></div>';
 
 }
 
 
-/* MARK TAUGHT */
+for(
+let d=1;
+d<=last.getDate();
+d++
+){
+
+let dt=new Date(y,m,d);
+
+let k=key(dt);
+
+let today=
+k===key(new Date());
+
+
+let marks=
+data.tuitions.map(x=>{
+
+let taught=
+(x.days||[]).includes(k);
+
+
+let weekId=
+getWeekId(dt);
+
+
+let scheduled=
+x.schedule &&
+Array.isArray(
+x.schedule[weekId]
+) &&
+x.schedule[weekId].includes(k);
+
+
+if(taught){
+
+return `
+<span class="dot">
+✓ ${esc(x.name)}
+</span>
+`;
+
+}
+
+
+if(scheduled){
+
+return `
+<span
+class="dot"
+style="opacity:.45">
+
+${esc(x.name)}
+
+</span>
+`;
+
+}
+
+
+return "";
+
+}).join("");
+
+
+out+=`
+
+<div
+class="day"
+style="${
+today
+?"outline:2px solid var(--accent)"
+:""
+}"
+onclick="openModal('${k}')">
+
+<div class="num">
+${d}
+</div>
+
+<div class="marks">
+${marks}
+</div>
+
+</div>
+
+`;
+
+}
+
+
+document.getElementById("cal")
+.innerHTML=out;
+
+}
+
+
+/* TEACHING DAY */
 
 function openModal(k){
 
-  if(!data.tuitions.length){
+if(!data.tuitions.length){
 
-    return alert(
-      'Add a tuition first.'
-    );
+return alert(
+"Add a tuition first."
+);
 
-  }
+}
 
-  picked=k;
-
-
-  document.getElementById(
-    'modalTitle'
-  ).textContent=
-    'Teaching Day • '+
-    new Date(
-      k+'T00:00:00'
-    ).toLocaleDateString();
+picked=k;
 
 
-  document.getElementById(
-    'sel'
-  ).innerHTML=
-    data.tuitions
-      .map(x=>
-        `<option value="${x.id}">
-          ${esc(x.name)}
-        </option>`
-      )
-      .join('');
+document.getElementById(
+"modalTitle"
+).textContent=
+"Teaching Day • "+
+new Date(
+k+"T00:00:00"
+).toLocaleDateString();
 
 
-  document.getElementById(
-    'modal'
-  ).classList.add('on');
+document.getElementById(
+"sel"
+).innerHTML=
+data.tuitions.map(x=>
+`<option value="${x.id}">
+${esc(x.name)}
+</option>`
+).join("");
+
+
+document.getElementById(
+"modal"
+).classList.add("on");
 
 }
 
 
 function closeModal(){
 
-  document.getElementById(
-    'modal'
-  ).classList.remove('on');
+document.getElementById(
+"modal"
+).classList.remove("on");
 
 }
 
 
 async function saveDay(){
 
-  let x=data.tuitions.find(
-    x=>
-      String(x.id)===
-      document.getElementById('sel').value
-  );
+let x=data.tuitions.find(
+x=>
+String(x.id)===
+document.getElementById("sel").value
+);
 
-  if(!x)return;
-
-
-  if(
-    x.days.includes(picked)
-  ){
-
-    x.days=
-      x.days.filter(
-        d=>d!==picked
-      );
-
-  }else{
-
-    x.days.push(picked);
-
-  }
+if(!x)return;
 
 
-  await save();
+if(!Array.isArray(x.days)){
+x.days=[];
+}
 
-  closeModal();
 
-  render();
+if(x.days.includes(picked)){
+
+x.days=
+x.days.filter(
+d=>d!==picked
+);
+
+}else{
+
+x.days.push(picked);
+
+}
+
+
+await save();
+
+closeModal();
+
+render();
 
 }
 
@@ -1049,139 +839,135 @@ async function saveDay(){
 
 function openSchedule(id){
 
-  scheduleTuitionId=id;
+scheduleTuitionId=id;
 
 
-  const tuition=
-    data.tuitions.find(
-      x=>
-        String(x.id)===
-        String(id)
-    );
+const tuition=
+data.tuitions.find(
+x=>
+String(x.id)===
+String(id)
+);
 
 
-  if(!tuition)return;
+if(!tuition)return;
 
 
-  document.getElementById(
-    "scheduleTitle"
-  ).textContent=
-    tuition.name+
-    " — This Week";
+document.getElementById(
+"scheduleTitle"
+).textContent=
+tuition.name+
+" — This Week";
 
 
-  const dates=
-    getWeekDates();
+const dates=getWeekDates();
 
 
-  const names=[
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
-  ];
+const names=[
+"Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+];
 
 
-  const weekId=
-    getWeekId(new Date());
+if(!tuition.schedule){
+tuition.schedule={};
+}
 
 
-  const selected=
-    tuition.schedule &&
-    Array.isArray(
-      tuition.schedule[weekId]
-    )
-      ? tuition.schedule[weekId]
-      : [];
+const weekId=
+getWeekId(new Date());
 
 
-  document.getElementById(
-    "scheduleDays"
-  ).innerHTML=
-
-    dates.map(
-      (date,i)=>`
-
-        <label class="schedule-day">
-
-          <input
-            type="checkbox"
-            class="scheduleCheck"
-            value="${date}"
-            ${
-              selected.includes(date)
-                ? "checked"
-                : ""
-            }>
-
-          ${names[i]}
-
-        </label>
-
-      `
-    ).join('');
+const selected=
+Array.isArray(
+tuition.schedule[weekId]
+)
+?tuition.schedule[weekId]
+:[];
 
 
-  document.getElementById(
-    "scheduleModal"
-  ).classList.add("on");
+document.getElementById(
+"scheduleDays"
+).innerHTML=
+
+dates.map(
+(date,i)=>`
+
+<label class="schedule-day">
+
+<input
+type="checkbox"
+class="scheduleCheck"
+value="${date}"
+${
+selected.includes(date)
+?"checked"
+:""
+}>
+
+${names[i]}
+
+</label>
+
+`
+).join("");
+
+
+document.getElementById(
+"scheduleModal"
+).classList.add("on");
 
 }
 
 
 function closeSchedule(){
 
-  document.getElementById(
-    "scheduleModal"
-  ).classList.remove("on");
+document.getElementById(
+"scheduleModal"
+).classList.remove("on");
 
-  scheduleTuitionId=null;
+scheduleTuitionId=null;
 
 }
 
 
 async function saveSchedule(){
 
-  const tuition=
-    data.tuitions.find(
-      x=>
-        String(x.id)===
-        String(scheduleTuitionId)
-    );
+const tuition=
+data.tuitions.find(
+x=>
+String(x.id)===
+String(scheduleTuitionId)
+);
+
+if(!tuition)return;
 
 
-  if(!tuition)return;
+if(!tuition.schedule){
+tuition.schedule={};
+}
 
 
-  if(!tuition.schedule){
-    tuition.schedule={};
-  }
+const weekId=
+getWeekId(new Date());
 
 
-  const weekId=
-    getWeekId(new Date());
+const selected=[
+...document.querySelectorAll(
+".scheduleCheck:checked"
+)
+].map(
+x=>x.value
+);
 
 
-  const selected=[
-    ...document.querySelectorAll(
-      ".scheduleCheck:checked"
-    )
-  ].map(
-    x=>x.value
-  );
+tuition.schedule[weekId]=selected;
 
 
-  tuition.schedule[weekId]=selected;
+await save();
 
+closeSchedule();
 
-  await save();
-
-  closeSchedule();
-
-  render();
+render();
 
 }
 
@@ -1190,72 +976,63 @@ async function saveSchedule(){
 
 function showTodayPopup(){
 
-  if(
-    !data ||
-    !Array.isArray(data.tuitions)
-  ){
-
-    return;
-
-  }
+if(
+!data ||
+!Array.isArray(data.tuitions)
+)return;
 
 
-  const today=
-    key(new Date());
+const today=
+key(new Date());
 
 
-  const names=
-    data.tuitions
-      .filter(x=>{
-
-        const weekId=
-          getWeekId(new Date());
+const weekId=
+getWeekId(new Date());
 
 
-        return(
-          x.schedule &&
-          Array.isArray(
-            x.schedule[weekId]
-          ) &&
-          x.schedule[weekId]
-            .includes(today)
-        );
-
-      })
-      .map(
-        x=>esc(x.name)
-      );
-
-
-  if(!names.length)return;
+const names=
+data.tuitions
+.filter(x=>
+x.schedule &&
+Array.isArray(
+x.schedule[weekId]
+) &&
+x.schedule[weekId].includes(today)
+)
+.map(
+x=>esc(x.name)
+);
 
 
-  document.getElementById(
-    "todayTuitionList"
-  ).innerHTML=
-
-    `<div class="today-title">
-
-      🌷 Today's Tuition :
-      ${names.map(
-        n=>`${n}📚`
-      ).join(", ")}
-
-    </div>`;
+if(!names.length)return;
 
 
-  document.getElementById(
-    "todayPopup"
-  ).classList.add("on");
+document.getElementById(
+"todayTuitionList"
+).innerHTML=
+
+`<div class="today-title">
+
+🌷 Today's Tuition :
+${names.map(
+n=>`${n}📚`
+).join(", ")}
+
+</div>`;
+
+
+document.getElementById(
+"todayPopup"
+).classList.add("on");
 
 }
 
 
 function closeTodayPopup(){
 
-  document.getElementById(
-    "todayPopup"
-  ).classList.remove("on");
+document.getElementById(
+"todayPopup"
+).classList.remove("on");
 
 }
 
@@ -1264,22 +1041,22 @@ function closeTodayPopup(){
 
 function moveMonth(n){
 
-  view.setMonth(
-    view.getMonth()+n
-  );
+view.setMonth(
+view.getMonth()+n
+);
 
-  render();
+render();
 
 }
 
 
 function goToday(){
 
-  view=new Date();
+view=new Date();
 
-  view.setDate(1);
+view.setDate(1);
 
-  render();
+render();
 
 }
 
@@ -1288,24 +1065,24 @@ function goToday(){
 
 async function removeTuition(id){
 
-  if(
-    confirm(
-      'Delete this tuition and all its saved dates?'
-    )
-  ){
+if(
+confirm(
+"Delete this tuition and all its saved dates?"
+)
+){
 
-    data.tuitions=
-      data.tuitions.filter(
-        x=>
-          String(x.id)!==
-          String(id)
-      );
+data.tuitions=
+data.tuitions.filter(
+x=>
+String(x.id)!==
+String(id)
+);
 
-    await save();
+await save();
 
-    render();
+render();
 
-  }
+}
 
 }
 
@@ -1314,33 +1091,33 @@ async function removeTuition(id){
 
 async function changeTarget(id){
 
-  let x=
-    data.tuitions.find(
-      x=>
-        String(x.id)===
-        String(id)
-    );
+let x=
+data.tuitions.find(
+x=>
+String(x.id)===
+String(id)
+);
 
 
-  let v=
-    prompt(
-      'Monthly target days:',
-      x.target
-    );
+let v=
+prompt(
+"Target teaching days per cycle:",
+x.target
+);
 
 
-  if(
-    v!==null &&
-    +v>0
-  ){
+if(
+v!==null &&
++v>0
+){
 
-    x.target=+v;
+x.target=+v;
 
-    await save();
+await save();
 
-    render();
+render();
 
-  }
+}
 
 }
 
@@ -1349,43 +1126,43 @@ async function changeTarget(id){
 
 function exportData(){
 
-  let b=new Blob(
-    [
-      JSON.stringify(
-        data,
-        null,
-        2
-      )
-    ],
-    {
-      type:'application/json'
-    }
-  );
+let b=new Blob(
+[
+JSON.stringify(
+data,
+null,
+2
+)
+],
+{
+type:"application/json"
+}
+);
 
 
-  let a=
-    document.createElement('a');
+let a=
+document.createElement("a");
 
 
-  a.href=
-    URL.createObjectURL(b);
+a.href=
+URL.createObjectURL(b);
 
 
-  a.download=
-    'sowa-tuition-backup.json';
+a.download=
+"sowa-tuition-backup.json";
 
 
-  a.click();
+a.click();
 
 
-  setTimeout(
-    ()=>{
-      URL.revokeObjectURL(
-        a.href
-      );
-    },
-    1000
-  );
+setTimeout(
+()=>{
+URL.revokeObjectURL(
+a.href
+);
+},
+1000
+);
 
 }
 
@@ -1394,68 +1171,90 @@ function exportData(){
 
 function importData(){
 
-  const i=
-    document.createElement('input');
+const i=
+document.createElement("input");
+
+i.type="file";
+
+i.accept=
+".json,application/json";
 
 
-  i.type='file';
+i.onchange=async()=>{
 
-  i.accept=
-    '.json,application/json';
+const f=i.files[0];
 
-
-  i.onchange=async()=>{
-
-    const f=i.files[0];
-
-    if(!f)return;
+if(!f)return;
 
 
-    try{
+try{
 
-      const d=
-        JSON.parse(
-          await f.text()
-        );
-
-
-      if(
-        !d ||
-        !Array.isArray(
-          d.tuitions
-        )
-      ){
-
-        throw 0;
-
-      }
+const d=
+JSON.parse(
+await f.text()
+);
 
 
-      data=d;
+if(
+!d ||
+!Array.isArray(
+d.tuitions
+)
+){
+
+throw 0;
+
+}
 
 
-      await save();
+/*
+Make sure restored old data
+also works with the new system.
+*/
 
-      render();
+d.tuitions=d.tuitions.map(x=>({
+
+...x,
+
+days:Array.isArray(x.days)
+?x.days
+:[],
+
+schedule:
+x.schedule &&
+typeof x.schedule==="object" &&
+!Array.isArray(x.schedule)
+?x.schedule
+:{}
+
+}));
 
 
-      alert(
-        'Your tuition data has been restored.'
-      );
+data=d;
 
 
-    }catch(e){
+await save();
 
-      alert(
-        'That backup file is not valid.'
-      );
-
-    }
-
-  };
+render();
 
 
-  i.click();
+alert(
+"Your tuition data has been restored."
+);
+
+
+}catch(e){
+
+alert(
+"That backup file is not valid."
+);
+
+}
+
+};
+
+
+i.click();
 
 }
 
@@ -1464,17 +1263,17 @@ function importData(){
 
 function esc(s){
 
-  return s.replace(
-    /[&<>"']/g,
-    c=>
-      ({
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        "'":'&#039;'
-      }[c])
-  );
+return String(s).replace(
+/[&<>"']/g,
+c=>
+({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[c])
+);
 
 }
 
@@ -1483,12 +1282,12 @@ function esc(s){
 
 loadData().then(()=>{
 
-  render();
+render();
 
-  setTimeout(
-    showTodayPopup,
-    500
-  );
+setTimeout(
+showTodayPopup,
+500
+);
 
 });
 
@@ -1498,21 +1297,21 @@ loadData().then(()=>{
 <script>
 
 if(
-  "serviceWorker" in navigator
+"serviceWorker" in navigator
 ){
 
-  window.addEventListener(
-    "load",
-    ()=>{
-      navigator.serviceWorker.register(
-        "./sw.js"
-      );
-    }
-  );
+window.addEventListener(
+"load",
+()=>{
+navigator.serviceWorker.register(
+"./sw.js"
+);
+}
+);
 
 }
 
 </script>
 
 </body>
-   </html>
+  </html>
