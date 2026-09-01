@@ -1,4 +1,4 @@
-const CACHE="sowa-tuition-final-v2";
+const CACHE="sowa-tuition-final-v3";
 
 const ASSETS=[
   "./",
