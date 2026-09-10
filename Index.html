@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#b7849a">
+
+<title>Sowa's Daily Life 🌷</title>
+
+<style>
+:root{
+  --mauve:#b7849a;
+  --soft:#ead7df;
+  --bg:#fff8fb;
+  --text:#4d3d46;
+  --muted:#8c7b84;
+  --danger:#a94f63;
+  --line:#eadde2;
+  --green:#78927e;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(145deg,#f6e8ee,#fff9fb);
+  color:var(--text);
+}
+
+.app{
+  max-width:460px;
+  margin:auto;
+  min-height:100vh;
+  padding:16px 14px 40px;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.brand{
+  font-size:21px;
+  font-weight:bold;
+}
+
+.mascot{
+  font-size:30px;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.card{
+  background:#fffdfd;
+  border:1px solid var(--line);
+  border-radius:21px;
+  padding:15px;
+  margin:11px 0;
+  box-shadow:0 5px 20px #b7849a16;
+}
+
+.hero{
+  background:linear-gradient(135deg,#ead7df,#f8edf1);
+}
+
+h1,h2,h3,p{
+  margin:0;
+}
+
+h1{
+  font-size:24px;
+}
+
+h2{
+  font-size:17px;
+  margin-bottom:10px;
+}
+
+.small{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.nav{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:18px;
+  padding:16px 10px;
+  text-align:left;
+  color:var(--text);
+  font-weight:bold;
+}
+
+.nav span{
+  display:block;
+  font-size:25px;
+  margin-bottom:5px;
+}
+
+.pill{
+  background:var(--soft);
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.progress{
+  height:9px;
+  background:#f0e6ea;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.bar{
+  height:100%;
+  background:var(--mauve);
+  width:0;
+  transition:.3s;
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 0;
+  border-bottom:1px solid #f1e8eb;
+}
+
+.task:last-child{
+  border-bottom:0;
+}
+
+.task input{
+  width:19px;
+  height:19px;
+  accent-color:var(--mauve);
+}
+
+.task .txt{
+  flex:1;
+}
+
+.done{
+  text-decoration:line-through;
+  color:#aaa;
+}
+
+.task select{
+  width:95px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:5px;
+  font-size:11px;
+  background:#fff;
+}
+
+input,
+textarea,
+select{
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:9px;
+  background:#fff;
+  width:100%;
+}
+
+textarea{
+  min-height:70px;
+  resize:vertical;
+}
+
+.addrow{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.addrow input{
+  flex:1;
+}
+
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:9px 12px;
+  background:var(--mauve);
+  color:white;
+  font-weight:bold;
+}
+
+.ghost{
+  background:#f4e8ed;
+  color:var(--text);
+}
+
+.danger{
+  background:#fff0f2;
+  border-color:#e9b6c0;
+}
+
+.danger h2{
+  color:var(--danger);
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.stat{
+  padding:12px;
+  border-radius:15px;
+  background:#fbf3f6;
+}
+
+.num{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.time-row{
+  display:grid;
+  grid-template-columns:1.4fr .8fr .8fr;
+  gap:6px;
+  align-items:center;
+  margin:7px 0;
+}
+
+.time-row label{
+  font-size:12px;
+}
+
+.time-row input{
+  padding:7px;
+}
+
+.chart{
+  width:155px;
+  height:155px;
+  border-radius:50%;
+  margin:8px auto;
+  background:conic-gradient(
+    #b7849a 0 30%,
+    #d7aebe 30% 55%,
+    #ead7df 55% 72%,
+    #c9b6bf 72% 100%
+  );
+  position:relative;
+}
+
+.chart:after{
+  content:"";
+  position:absolute;
+  inset:39px;
+  background:#fffdfd;
+  border-radius:50%;
+}
+
+.legend{
+  font-size:12px;
+  line-height:1.9;
+}
+
+.stars{
+  font-size:27px;
+  color:var(--mauve);
+}
+
+.starbtn{
+  border:0;
+  background:none;
+  font-size:27px;
+  padding:0 2px;
+}
+
+.back{
+  border:0;
+  background:none;
+  color:var(--mauve);
+  font-weight:bold;
+  padding:0 0 10px;
+}
+
+.weekgrid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.weekcol{
+  background:#fbf3f6;
+  border-radius:13px;
+  padding:7px;
+  min-height:140px;
+}
+
+.weekcol b{
+  font-size:12px;
+}
+
+.mini{
+  display:flex;
+  gap:4px;
+  margin:7px 0;
+  font-size:10px;
+}
+
+.mini input{
+  width:14px;
+  height:14px;
+}
+
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+  text-align:center;
+  font-size:12px;
+}
+
+.calhead{
+  font-weight:bold;
+  color:var(--muted);
+}
+
+.day{
+  padding:8px 2px;
+  border-radius:9px;
+  border:1px solid transparent;
+  background:white;
+}
+
+.today{
+  background:var(--soft);
+  font-weight:bold;
+}
+
+.good{
+  box-shadow:inset 0 -3px var(--green);
+}
+
+.partial{
+  box-shadow:inset 0 -3px #c9a66b;
+}
+
+.bad{
+  box-shadow:inset 0 -3px #c57f8e;
+}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:#493b4366;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  z-index:10;
+}
+
+.modal{
+  max-width:390px;
+  width:100%;
+  background:#fffdfd;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 15px 50px #0003;
+}
+
+.modal-actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.modal-actions button{
+  flex:1;
+}
+
+.tag{
+  font-size:10px;
+  padding:4px 7px;
+  background:#f4e8ed;
+  border-radius:10px;
+}
+
+.empty{
+  padding:12px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:20px;
+}
+
+@media(max-width:370px){
+  .task select{
+    display:none;
+  }
+
+  .brand{
+    font-size:18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+  <div class="brand">Sowa's Daily Life 🌷</div>
+  <div class="mascot">🐰</div>
+</header>
+
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+<div class="card hero">
+
+<div class="small" id="homeDate"></div>
+
+<h1 style="margin-top:5px">
+Let's make today count ✨
+</h1>
+
+<p class="small" style="margin-top:7px">
+<span id="homePending">0</span> tasks pending ·
+Study target <span id="homeStudyTarget">3h</span>
+</p>
+
+</div>
+
+
+<div class="grid">
+
+<button class="nav" onclick="showPage('daily')">
+<span>🌷</span>
+Daily Plan
+</button>
+
+<button class="nav" onclick="showPage('weekly')">
+<span>📅</span>
+Weekly Plan
+</button>
+
+<button class="nav" onclick="showPage('monthly')">
+<span>🗓️</span>
+Monthly Plan
+</button>
+
+<button class="nav" onclick="showPage('calendar')">
+<span>📆</span>
+Calendar
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="row">
+
+<h2>Today's Progress</h2>
+
+<span class="pill" id="homeProgressText">
+0 / 12
+</span>
+
+</div>
+
+<div class="progress">
+<div class="bar" id="homeBar"></div>
+</div>
+
+</div>
+
+
+<div class="card" id="phoneHome"></div>
+
+
+<div class="card">
+
+<div class="row">
+
+<h2>🐼 Future Reminder</h2>
+
+<span class="tag">accountability</span>
+
+</div>
+
+<p id="futureMessage"
+style="line-height:1.55;font-size:13px">
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- DAILY -->
+
+<section id="daily" class="page">
+
+<button class="back" onclick="showPage('home')">
+← Home
+</button>
+
+
+<div class="card">
+
+<div class="row">
+
+<h2>🌷 Daily Plan</h2>
+
+<span class="pill" id="dailyCount">
+0 / 12
+</span>
+
+</div>
+
+<p class="small" style="margin-bottom:7px">
+Up to 12 total tasks.
+</p>
+
+<div id="dailyTasks"></div>
+
+
+<div class="addrow">
+
+<input
+id="newTask"
+type="text"
+placeholder="Add a task..."
+>
+
+<button
+class="btn"
+onclick="addTask()">
+＋
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- STUDY -->
+
+<div class="card">
+
+<div class="row">
+
+<h2>📚 Study Time & Subtypes</h2>
+
+<span class="tag">focus</span>
+
+</div>
+
+<div id="studyRows"></div>
+
+
+<div class="addrow">
+
+<select id="studyType">
+
+<option>Anatomy</option>
+<option>Physiology</option>
+<option>Pharmacology</option>
+<option>Medicine</option>
+<option>Microbiology</option>
+<option>Revision</option>
+<option>Viva / Item</option>
+<option>Assignment</option>
+<option>Custom</option>
+
+</select>
+
+<input
+id="studyMin"
+type="number"
+min="0"
+placeholder="minutes"
+>
+
+<button class="btn" onclick="addStudy()">
+＋
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- TIME -->
+
+<div class="card">
+
+<h2>⏱️ Where did your day go?</h2>
+
+<div id="timeRows"></div>
+
+<button
+class="btn ghost"
+style="margin-top:8px"
+onclick="saveData()">
+Save time
+</button>
+
+</div>
+
+
+
+<!-- PIE -->
+
+<div class="card">
+
+<h2>📊 Daily Time Analysis</h2>
+
+<div class="chart" id="pie"></div>
+
+<div
+class="legend"
+id="legend">
+</div>
+
+</div>
+
+
+
+<!-- RATING -->
+
+<div class="card">
+
+<h2>⭐ Today's Rating</h2>
+
+<div id="stars"></div>
+
+<p
+class="small"
+id="ratingText"
+style="margin-top:5px">
+</p>
+
+</div>
+
+
+
+<!-- REFLECTION -->
+
+<div class="card">
+
+<h2>🌙 End-of-Day Reality Check</h2>
+
+<p class="small">
+What did you plan but not finish?
+</p>
+
+<textarea
+id="planned"
+placeholder="Write it honestly...">
+</textarea>
+
+
+<p
+class="small"
+style="margin:9px 0 5px">
+Why didn't you do it?
+</p>
+
+<textarea
+id="why"
+placeholder="Phone? Didn't start? Time problem? Other?">
+</textarea>
+
+
+<p style="margin:11px 0 5px;font-size:13px">
+<b>Tomorrow's MUST-DO:</b>
+</p>
+
+<input
+id="mustdo"
+type="text"
+placeholder="One important action"
+>
+
+<button
+class="btn"
+style="margin-top:10px;width:100%"
+onclick="saveData()">
+Save reflection
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- WEEKLY -->
+
+<section id="weekly" class="page">
+
+<button class="back" onclick="showPage('home')">
+← Home
+</button>
+
+
+<div class="card">
+
+<div class="row">
+
+<h2>📅 Weekly Plan</h2>
+
+<span class="pill">
+4–5 tasks / day
+</span>
+
+</div>
+
+<div id="weekPlan"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📊 Weekly Analysis</h2>
+
+<div class="stats">
+
+<div class="stat">
+<div class="small">Tasks</div>
+<div class="num" id="wTasks">0 / 0</div>
+</div>
+
+<div class="stat">
+<div class="small">Study</div>
+<div class="num" id="wStudy">0h</div>
+</div>
+
+<div class="stat">
+<div class="small">Phone</div>
+<div class="num" id="wPhone">0h</div>
+</div>
+
+<div class="stat">
+<div class="small">Completion</div>
+<div class="num" id="wPct">0%</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- MONTHLY -->
+
+<section id="monthly" class="page">
+
+<button class="back" onclick="showPage('home')">
+← Home
+</button>
+
+
+<div class="card">
+
+<div class="row">
+
+<h2>🗓️ Monthly Important Goals</h2>
+
+<span class="pill" id="mCount">
+0 / 10
+</span>
+
+</div>
+
+<p class="small">
+10 important goals for the month.
+</p>
+
+<div id="monthlyTasks"></div>
+
+
+<div class="addrow">
+
+<input
+id="newGoal"
+type="text"
+placeholder="Add important goal..."
+>
+
+<button
+class="btn"
+onclick="addGoal()">
+＋
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📈 Monthly Overview</h2>
+
+<div class="progress">
+
+<div
+class="bar"
+id="mBar">
+</div>
+
+</div>
+
+<p
+class="small"
+id="mText"
+style="margin-top:8px">
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- CALENDAR -->
+
+<section id="calendar" class="page">
+
+<button class="back" onclick="showPage('home')">
+← Home
+</button>
+
+
+<div class="card">
+
+<div class="row">
+
+<h2>
+📆 <span id="calTitle"></span>
+</h2>
+
+<div>
+
+<button
+class="btn ghost"
+onclick="changeMonth(-1)">
+‹
+</button>
+
+<button
+class="btn ghost"
+onclick="changeMonth(1)">
+›
+</button>
+
+</div>
+
+</div>
+
+
+<div
+class="calendar"
+id="calendarGrid"
+style="margin-top:11px">
+</div>
+
+<p
+class="small"
+style="margin-top:12px">
+🟢 good · 🟡 partial · 🔴 needs attention
+</p>
+
+</div>
+
+
+<div
+class="card"
+id="selectedDay">
+
+<div class="empty">
+Select a date to view its summary.
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+🌷 Sowa's Daily Life · Your time is your life.
+</footer>
+
+</div>
+
+
+
+<!-- POPUP -->
+
+<div
+class="modal-bg"
+id="startupModal"
+style="display:none">
+
+<div class="modal">
+
+<div style="font-size:32px">
+🐼🚨
+</div>
+
+<h2
+style="margin-top:7px"
+id="modalTitle">
+</h2>
+
+<p
+id="modalBody"
+class="small"
+style="margin-top:7px;line-height:1.6">
+</p>
+
+
+<div class="modal-actions">
+
+<button
+class="btn ghost"
+onclick="closeModal()">
+I'll check
+</button>
+
+<button
+class="btn"
+onclick="closeModal();showPage('daily')">
+Let's work
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+const KEY="sowaDailyLife_v1";
+
+const cats=[
+"Study",
+"Phone",
+"Sleep",
+"College",
+"Health",
+"Personal",
+"Other"
+];
+
+let todayKey=keyFor(new Date());
+
+let data=load();
+
+let viewMonth=
+new Date(
+new Date().getFullYear(),
+new Date().getMonth(),
+1
+);
+
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function load(){
+
+try{
+
+const saved=
+JSON.parse(
+localStorage.getItem(KEY)
+);
+
+if(saved) return saved;
+
+}catch(e){}
+
+return{
+
+settings:{
+phoneLimit:240,
+studyTarget:180
+},
+
+days:{},
+months:{}
+
+};
+
+}
+
+
+function save(){
+
+localStorage.setItem(
+KEY,
+JSON.stringify(data)
+);
+
+}
+
+
+
+function keyFor(d){
+
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
+
+}
+
+
+
+function day(){
+
+if(!data.days[todayKey]){
+
+data.days[todayKey]={
+
+tasks:[],
+
+study:[],
+
+time:{
+Study:0,
+Phone:0,
+Sleep:0,
+College:0,
+Health:0,
+Personal:0,
+Other:0
+},
+
+rating:0,
+
+planned:"",
+why:"",
+mustdo:""
+
+};
+
+}
+
+return data.days[todayKey];
+
+}
+
+
+
+/* =========================
+   PAGE
+========================= */
+
+function showPage(id){
+
+document
+.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+document
+.getElementById(id)
+.classList.add("active");
+
+renderAll();
+
+window.scrollTo(0,0);
+
+}
+
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function escapeHtml(s){
+
+return String(s)
+.replace(/[&<>"']/g,m=>({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[m]));
+
+}
+
+
+
+function fmtMin(m){
+
+m=Math.max(0,Number(m)||0);
+
+return Math.floor(m/60)+"h "+
+String(m%60).padStart(2,"0")+"m";
+
+}
+
+
+
+function dateLabel(d){
+
+return d.toLocaleDateString(
+undefined,
+{
+weekday:"long",
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+);
+
+}
+
+
+
+/* =========================
+   DAILY TASKS
+========================= */
+
+function ensureTasks(){
+
+const x=day();
+
+if(!x.tasks.length){
+
+x.tasks=[
+
+{text:"Revise an important topic",done:false,cat:"Study"},
+
+{text:"Prepare for Item / Viva",done:false,cat:"Study"},
+
+{text:"Complete assignment",done:false,cat:"Study"},
+
+{text:"College work",done:false,cat:"College"},
+
+{text:"Revision",done:false,cat:"Study"},
+
+{text:"Exercise / movement",done:false,cat:"Health"},
+
+{text:"Organize notes",done:false,cat:"Personal"},
+
+{text:"Read tomorrow's topic",done:false,cat:"Study"},
+
+{text:"Personal work",done:false,cat:"Personal"},
+
+{text:"Self-care",done:false,cat:"Health"},
+
+{text:"Important small task",done:false,cat:"Other"},
+
+{text:"Extra task",done:false,cat:"Other"}
+
+];
+
+}
+
+}
+
+
+
+function addTask(){
+
+let input=
+document.getElementById("newTask");
+
+let value=input.value.trim();
+
+if(!value)return;
+
+if(day().tasks.length>=12){
+
+alert("Daily task limit is 12.");
+
+return;
+
+}
+
+day().tasks.push({
+
+text:value,
+done:false,
+cat:"Other"
+
+});
+
+input.value="";
+
+save();
+
+renderAll();
+
+}
+
+
+
+function toggleTask(i){
+
+day().tasks[i].done=
+!day().tasks[i].done;
+
+save();
+
+renderAll();
+
+}
+
+
+
+function changeCat(i,v){
+
+day().tasks[i].cat=v;
+
+save();
+
+}
+
+
+
+/* =========================
+   STUDY
+========================= */
+
+function addStudy(){
+
+let type=
+document.getElementById("studyType").value;
+
+let mins=
+Number(
+document.getElementById("studyMin").value
+)||0;
+
+if(mins<=0)return;
+
+day().study.push({
+type:type,
+mins:mins
+});
+
+document.getElementById("studyMin").value="";
+
+save();
+
+renderAll();
+
+}
+
+
+
+function deleteStudy(i){
+
+day().study.splice(i,1);
+
+save();
+
+renderAll();
+
+}
+
+
+
+/* =========================
+   TIME
+========================= */
+
+function setTime(c,v){
+
+day().time[c]=
+Number(v)||0;
+
+save();
+
+renderAnalysis();
+
+renderHome();
+
+}
+
+
+
+/* =========================
+   DAILY RENDER
+========================= */
+
+function renderDaily(){
+
+ensureTasks();
+
+let x=day();
+
+let done=
+x.tasks.filter(t=>t.done).length;
+
+
+document.getElementById(
+"dailyCount"
+).textContent=
+done+" / "+x.tasks.length;
+
+
+
+document.getElementById(
+"dailyTasks"
+).innerHTML=
+
+x.tasks.map((t,i)=>`
+
+<div class="task">
+
+<input
+type="checkbox"
+${t.done?"checked":""}
+onchange="toggleTask(${i})">
+
+<span class="txt ${t.done?"done":""}">
+${escapeHtml(t.text)}
+</span>
+
+<select
+onchange="changeCat(${i},this.value)">
+
+${cats.map(c=>`
+
+<option
+${t.cat===c?"selected":""}>
+${c}
+</option>
+
+`).join("")}
+
+</select>
+
+</div>
+
+`).join("");
+
+
+
+let study=
+x.study||[];
+
+
+document.getElementById(
+"studyRows"
+).innerHTML=
+
+study.length?
+
+study.map((s,i)=>`
+
+<div
+class="row"
+style="padding:7px 0;border-bottom:1px solid #f1e8eb">
+
+<span>
+📚 ${escapeHtml(s.type)}
+</span>
+
+<span>
+
+<b>${fmtMin(s.mins)}</b>
+
+<button
+class="btn ghost"
+onclick="deleteStudy(${i})">
+×
+</button>
+
+</span>
+
+</div>
+
+`).join("")
+
+:
+
+`<div class="empty">
+No study time recorded yet.
+</div>`;
+
+
+
+const labels=[
+"Study",
+"Phone",
+"Sleep",
+"College",
+"Health",
+"Personal",
+"Other"
+];
+
+
+document.getElementById(
+"timeRows"
+).innerHTML=
+
+labels.map(c=>`
+
+<div class="time-row">
+
+<label>
+
+${c==="Study"?"📚":
+c==="Phone"?"📱":
+c==="Sleep"?"😴":
+c==="College"?"🏥":
+c==="Health"?"🏃":
+c==="Personal"?"🌷":"✨"}
+
+${c}
+
+</label>
+
+<input
+type="number"
+min="0"
+value="${x.time[c]||0}"
+onchange="setTime('${c}',this.value)">
+
+<span class="small">
+min
+</span>
+
+</div>
+
+`).join("");
+
+
+renderAnalysis();
+
+renderStars();
+
+document.getElementById("planned").value=
+x.planned||"";
+
+document.getElementById("why").value=
+x.why||"";
+
+document.getElementById("mustdo").value=
+x.mustdo||"";
+
+}
+
+
+
+/* =========================
+   PIE CHART
+========================= */
+
+function renderAnalysis(){
+
+let x=day();
+
+let t=x.time;
+
+let total=
+Object.values(t)
+.reduce((a,b)=>a+Number(b||0),0);
+
+
+let cur=0;
+
+const pie=
+document.getElementById("pie");
+
+
+if(total){
+
+const stops=[];
+
+const colors=[
+"#b7849a",
+"#d7aebe",
+"#ead7df",
+"#c9b6bf",
+"#9e8b94",
+"#c2a5b1",
+"#e0ccd4"
+];
+
+cats.forEach((c,i)=>{
+
+let n=
+(Number(t[c])||0)/
+total*100;
+
+stops.push(
+colors[i]+" "+
+cur+"% "+
+(cur+n)+"%"
+);
+
+cur+=n;
+
+});
+
+pie.style.background=
+"conic-gradient("+stops.join(",")+")";
+
+}else{
+
+pie.style.background=
+"conic-gradient(#ead7df 0 100%)";
+
+}
+
+
+const emojis={
+Study:"📚",
+Phone:"📱",
+Sleep:"😴",
+College:"🏥",
+Health:"🏃",
+Personal:"🌷",
+Other:"✨"
+};
+
+
+document.getElementById(
+"legend"
+).innerHTML=
+
+cats.map(c=>
+
+`${emojis[c]} ${c} —
+<b>${fmtMin(t[c]||0)}</b>`
+
+).join("<br>");
+
+}
+
+
+
+/* =========================
+   RATING
+========================= */
+
+function renderStars(){
+
+let r=day().rating;
+
+document.getElementById(
+"stars"
+).innerHTML=
+
+[1,2,3,4,5].map(i=>`
+
+<button
+class="starbtn"
+onclick="setRating(${i})">
+
+${i<=r?"★":"☆"}
+
+</button>
+
+`).join("");
+
+document.getElementById(
+"ratingText"
+).textContent=
+
+r?
+`Overall day rating: ${r}/5`
+:
+"Tap a star to rate your day.";
+
+}
+
+
+
+function setRating(r){
+
+day().rating=r;
+
+save();
+
+renderStars();
+
+}
+
+
+
+/* =========================
+   SAVE REFLECTION
+========================= */
+
+function saveData(){
+
+let x=day();
+
+x.planned=
+document.getElementById("planned").value;
+
+x.why=
+document.getElementById("why").value;
+
+x.mustdo=
+document.getElementById("mustdo").value;
+
+save();
+
+alert("🌷 Saved.");
+
+renderAll();
+
+}
+
+
+
+/* =========================
+   HOME
+========================= */
+
+function renderHome(){
+
+let x=day();
+
+let done=
+x.tasks.filter(t=>t.done).length;
+
+let pending=
+x.tasks.length-done;
+
+let percent=
+x.tasks.length?
+Math.round(
+done/x.tasks.length*100
+):0;
+
+let phone=
+x.time.Phone||0;
+
+let limit=
+data.settings.phoneLimit;
+
+
+document.getElementById(
+"homeDate"
+).textContent=
+dateLabel(new Date()).toUpperCase();
+
+
+document.getElementById(
+"homePending"
+).textContent=
+pending;
+
+
+document.getElementById(
+"homeStudyTarget"
+).textContent=
+fmtMin(data.settings.studyTarget);
+
+
+document.getElementById(
+"homeProgressText"
+).textContent=
+done+" / "+x.tasks.length;
+
+
+document.getElementById(
+"homeBar"
+).style.width=
+percent+"%";
+
+
+let phoneBox=
+document.getElementById("phoneHome");
+
+phoneBox.className=
+"card "+(phone>limit?"danger":"");
+
+
+phoneBox.innerHTML=`
+
+<h2>
+${phone>limit?"🚨":"📱"}
+Phone Time
+</h2>
+
+<p>
+<b>${fmtMin(phone)}</b>
+today · limit
+<b>${fmtMin(limit)}</b>
+</p>
+
+<p
+class="small"
+style="margin-top:5px">
+
+${
+phone>limit
+?
+"Danger: you are over your limit by "+
+fmtMin(phone-limit)+"."
+:
+"You have "+
+fmtMin(limit-phone)+
+" left before the limit."
+}
+
+</p>
+
+`;
+
+
+let message;
+
+if(percent<50){
+
+message=
+"Your plan is ahead of you. Don't let another scroll decide your day.";
+
+}else if(phone>limit){
+
+message=
+"You already crossed your phone limit. Protect the rest of today.";
+
+}else{
+
+message=
+"Good. Keep the next promise you made to yourself.";
+
+}
+
+
+document.getElementById(
+"futureMessage"
+).textContent=
+message;
+
+}
+
+
+
+/* =========================
+   WEEKLY
+========================= */
+
+function renderWeekly(){
+
+const names=[
+"Sat","Sun","Mon","Tue",
+"Wed","Thu","Fri"
+];
+
+let today=new Date();
+
+let start=new Date(today);
+
+let diff=
+(today.getDay()+1)%7;
+
+start.setDate(
+today.getDate()-diff
+);
+
+
+let html=
+'<div class="weekgrid">';
+
+let total=0;
+let done=0;
+let study=0;
+let phone=0;
+
+
+for(let i=0;i<7;i++){
+
+let d=
+new Date(start);
+
+d.setDate(
+start.getDate()+i
+);
+
+let k=keyFor(d);
+
+let x=
+data.days[k]||
+{
+tasks:[],
+study:[],
+time:{}
+};
+
+let tasks=
+x.tasks||[];
+
+total+=tasks.length;
+
+done+=
+tasks.filter(t=>t.done).length;
+
+study+=
+(x.study||[])
+.reduce(
+(a,s)=>a+Number(s.mins||0),
+0
+);
+
+phone+=
+Number(
+(x.time||{}).Phone||0
+);
+
+
+html+=`
+
+<div class="weekcol">
+
+<b>
+${names[i]}<br>
+<span class="small">
+${d.getDate()}
+</span>
+</b>
+
+${
+tasks.slice(0,5).map((t,j)=>`
+
+<div class="mini">
+
+<input
+type="checkbox"
+${t.done?"checked":""}
+onchange="weekToggle('${k}',${j})">
+
+<span
+class="${t.done?"done":""}">
+${escapeHtml(t.text)}
+</span>
+
+</div>
+
+`).join("")
+}
+
+</div>
+
+`;
+
+}
+
+html+="</div>";
+
+document.getElementById(
+"weekPlan"
+).innerHTML=html;
+
+
+document.getElementById(
+"wTasks"
+).textContent=
+done+" / "+total;
+
+
+document.getElementById(
+"wStudy"
+).textContent=
+fmtMin(study);
+
+
+document.getElementById(
+"wPhone"
+).textContent=
+fmtMin(phone);
+
+
+document.getElementById(
+"wPct"
+).textContent=
+total?
+Math.round(done/total*100)+"%"
+:
+"0%";
+
+}
+
+
+
+function weekToggle(k,i){
+
+if(!data.days[k])return;
+
+data.days[k].tasks[i].done=
+!data.days[k].tasks[i].done;
+
+save();
+
+renderWeekly();
+
+}
+
+
+
+/* =========================
+   MONTHLY
+========================= */
+
+function monthKey(){
+
+return viewMonth.getFullYear()+"-"+
+String(viewMonth.getMonth()+1).padStart(2,"0");
+
+}
+
+
+
+function month(){
+
+let k=monthKey();
+
+if(!data.months[k]){
+
+data.months[k]=
+Array.from(
+{length:10},
+()=>({
+text:"",
+done:false
+})
+);
+
+}
+
+return data.months[k];
+
+}
+
+
+
+function addGoal(){
+
+let input=
+document.getElementById("newGoal");
+
+let value=input.value.trim();
+
+if(!value)return;
+
+let m=month();
+
+let slot=
+m.find(g=>!g.text);
+
+if(!slot){
+
+alert(
+"Monthly limit is 10 goals."
+);
+
+return;
+
+}
+
+slot.text=value;
+
+input.value="";
+
+save();
+
+renderMonthly();
+
+}
+
+
+
+function renderMonthly(){
+
+let m=month();
+
+let done=
+m.filter(g=>g.done).length;
+
+document.getElementById(
+"mCount"
+).textContent=
+done+" / 10";
+
+
+document.getElementById(
+"monthlyTasks"
+).innerHTML=
+
+m.map((g,i)=>`
+
+<div class="task">
+
+<input
+type="checkbox"
+${g.done?"checked":""}
+${g.text?"":"disabled"}
+onchange="goalToggle(${i})">
+
+<span
+class="txt ${g.done?"done":""}">
+
+${
+g.text
+?
+escapeHtml(g.text)
+:
+'<span class="small">Empty goal box</span>'
+}
+
+</span>
+
+</div>
+
+`).join("");
+
+
+document.getElementById(
+"mBar"
+).style.width=
+done*10+"%";
+
+
+document.getElementById(
+"mText"
+).textContent=
+done+
+" of 10 important goals completed.";
+
+}
+
+
+
+function goalToggle(i){
+
+month()[i].done=
+!month()[i].done;
+
+save();
+
+renderMonthly();
+
+}
+
+
+
+/* =========================
+   CALENDAR
+========================= */
+
+function changeMonth(n){
+
+viewMonth.setMonth(
+viewMonth.getMonth()+n
+);
+
+renderCalendar();
+
+}
+
+
+
+function renderCalendar(){
+
+let y=
+viewMonth.getFullYear();
+
+let m=
+viewMonth.getMonth();
+
+let first=
+new Date(y,m,1).getDay();
+
+let days=
+new Date(y,m+1,0).getDate();
+
+
+document.getElementById(
+"calTitle"
+).textContent=
+viewMonth.toLocaleDateString(
+undefined,
+{
+month:"long",
+year:"numeric"
+}
+);
+
+
+let html=
+[
+"Sun","Mon","Tue",
+"Wed","Thu","Fri","Sat"
+]
+.map(x=>
+`<div class="calhead">${x[0]}</div>`
+)
+.join("");
+
+
+for(let i=0;i<first;i++){
+
+html+="<div></div>";
+
+}
+
+
+for(let d=1;d<=days;d++){
+
+let k=
+keyFor(
+new Date(y,m,d)
+);
+
+let x=data.days[k];
+
+let cls="";
+
+if(x&&x.tasks.length){
+
+let p=
+x.tasks.filter(
+t=>t.done
+).length/
+x.tasks.length;
+
+if(p>=.8)
+cls="good";
+
+else if(p>=.4)
+cls="partial";
+
+else
+cls="bad";
+
+}
+
+
+if(k===todayKey)
+cls+=" today";
+
+
+html+=`
+
+<button
+class="day ${cls}"
+onclick="selectDate('${k}')">
+
+${d}
+
+</button>
+
+`;
+
+}
+
+
+document.getElementById(
+"calendarGrid"
+).innerHTML=html;
+
+}
+
+
+
+function selectDate(k){
+
+let x=data.days[k];
+
+let box=
+document.getElementById(
+"selectedDay"
+);
+
+if(!x){
+
+box.innerHTML=
+`<div class="empty">
+No saved data for this day.
+</div>`;
+
+return;
+
+}
+
+
+let done=
+x.tasks.filter(t=>t.done).length;
+
+let study=
+(x.study||[])
+.reduce(
+(a,s)=>a+s.mins,
+0
+);
+
+
+box.innerHTML=`
+
+<h2>🌷 ${k}</h2>
+
+<p>
+<b>${done}/${x.tasks.length}</b>
+tasks completed ·
+⭐ ${x.rating||0}/5
+</p>
+
+<p
+class="small"
+style="margin-top:6px">
+
+📚 Study ${fmtMin(study)}
+·
+📱 Phone ${fmtMin((x.time||{}).Phone||0)}
+
+</p>
+
+<hr
+style="
+border:0;
+border-top:1px solid var(--line);
+margin:12px 0;
+">
+
+<p style="font-size:12px">
+
+<b>Reality check:</b>
+
+${escapeHtml(
+x.why||"Not written"
+)}
+
+</p>
+
+<p
+style="font-size:12px;margin-top:7px">
+
+<b>Tomorrow:</b>
+
+${escapeHtml(
+x.mustdo||"Not set"
+)}
+
+</p>
+
+`;
+
+}
+
+
+
+/* =========================
+   POPUP
+========================= */
+
+function closeModal(){
+
+document.getElementById(
+"startupModal"
+).style.display="none";
+
+}
+
+
+
+function startupAlert(){
+
+let x=day();
+
+let pending=
+x.tasks.filter(t=>!t.done).length;
+
+let phone=
+x.time.Phone||0;
+
+let limit=
+data.settings.phoneLimit;
+
+
+if(pending||phone>limit){
+
+document.getElementById(
+"modalTitle"
+).textContent=
+`You have ${pending} pending task${pending===1?"":"s"} today`;
+
+
+document.getElementById(
+"modalBody"
+).textContent=
+
+`Phone time: ${fmtMin(phone)}. `+
+(
+phone>limit
+?
+"You are already over your phone limit. "
+:
+""
+)+
+"Before another scroll, finish one small task.";
+
+
+document.getElementById(
+"startupModal"
+).style.display="flex";
+
+}
+
+}
+
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderAll(){
+
+renderHome();
+renderDaily();
+renderWeekly();
+renderMonthly();
+renderCalendar();
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+renderAll();
+
+if(!localStorage.getItem(KEY)){
+
+ensureTasks();
+
+save();
+
+renderAll();
+
+}
+
+setTimeout(
+startupAlert,
+500
+);
+
+</script>
+
+</body>
+  </html>
